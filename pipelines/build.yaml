@@ -1,0 +1,16 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/${_FIREBASE_PROJECT_ID}/firebase', './dockerfiles/firebase']
+  - name: 'node:16.10'
+    entrypoint: 'npm'
+    args: ['install']
+  - name: 'node:16.10'
+    entrypoint: 'npm'
+    args: ['run', 'build']
+  - name: 'gcr.io/${_FIREBASE_PROJECT_ID}/firebase'
+    args: ['use', '${_FIREBASE_PROJECT_ID}', '--token', '${_FIREBASE_TOKEN}']
+  - name: 'gcr.io/${_FIREBASE_PROJECT_ID}/firebase'
+    args: ['target:apply', 'hosting', 'expenses-control-app-fa386', 'expenses-control-app-fa386', '--token', '${_FIREBASE_TOKEN}']
+  - name: 'gcr.io/${_FIREBASE_PROJECT_ID}/firebase'
+    args: ['deploy', '--token', '${_FIREBASE_TOKEN}', '--only', 'hosting:expenses-control-app-fa386']
+timeout: 1200s
