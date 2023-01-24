@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+
+$theme-green-primary: mat.define-palette(mat.$green-palette, 700, 300, 900);
+$theme-green-accent: mat.define-palette(mat.$grey-palette, 100);
+$theme-green-warn: mat.define-palette(mat.$red-palette, 700, 300, 900);
+
+$theme-green: mat.define-light-theme((
+    color: (
+        primary: $theme-green-primary,
+        accent: $theme-green-accent,
+        warn: $theme-green-warn,
+    )
+));
+@include mat.all-component-themes($theme-green);
+@include mat.strong-focus-indicators-theme($theme-green);

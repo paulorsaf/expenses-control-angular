@@ -1,0 +1,40 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+@import 'theme-green.scss';
+
+@mixin custom-components-theme($theme) {
+  @include mat.card-theme($theme);
+}
+
+button[mat-stroked-button][color="accent"] {
+  border-width: 2px;
+}
+button[mat-stroked-button][color="accent"],
+button[mat-button][color="accent"] {
+  color: mat.get-color-from-palette($theme-green-accent, 100);
+  border-color: mat.get-color-from-palette($theme-green-accent, 100);
+}
+
+mat-form-field {
+  input.mat-input-element,
+  mat-label {
+    color: mat.get-color-from-palette($theme-green-accent, 100);
+    
+    &::placeholder {
+      color: mat.get-color-from-palette($theme-green-accent, 100);
+    }
+    &:-ms-input-placeholder {
+      color: mat.get-color-from-palette($theme-green-accent, 100);
+    }
+    &::-ms-input-placeholder {
+      color: mat.get-color-from-palette($theme-green-accent, 100);
+    }
+  }
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  height: 2px !important;
+  background: mat.get-color-from-palette($theme-green-accent, 100);
+}
