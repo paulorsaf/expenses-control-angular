@@ -30,7 +30,9 @@ form {
     }
 
     .aligned-to-right {
-        text-align: right;
+        display: flex;
+        justify-content: end;
+        align-items: end;
         width: 100%;
     }
 }
@@ -40,4 +42,9 @@ form {
     justify-content: center;
     align-items: center;
     padding: 8px 0;
+}
+
+.recover-password {
+    padding-left: 62px;
+    padding-right: 62px;
 }
