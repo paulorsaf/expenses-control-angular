@@ -17,6 +17,10 @@ export class AuthenticationService {
     ));
   }
 
+  recoverPassword(email: string): Observable<void> {
+    return from(this.auth.sendPasswordResetEmail(email));
+  }
+
 }
 
 type SignIn = {

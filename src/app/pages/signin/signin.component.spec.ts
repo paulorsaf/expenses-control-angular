@@ -42,28 +42,6 @@ describe('SigninComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('given form', () => {
-
-    it('when email is empty, then recover password button should be disabled', () => {
-      setEmail('');
-  
-      expect(recoverPasswordButton().disabled).toBeTruthy();
-    })
-  
-    it('when email is invalid, then recover password button should be disabled', () => {
-      setEmail('invalidEmail');
-  
-      expect(recoverPasswordButton().disabled).toBeTruthy();
-    })
-  
-    it('when email is valid, then recover password button should be enabled', () => {
-      setEmail('valid@email.com');
-  
-      expect(recoverPasswordButton().disabled).toBeFalsy();
-    })
-
-  })
-
   describe('Login flow', () => {
 
     describe('given form', () => {
@@ -159,6 +137,92 @@ describe('SigninComponent', () => {
 
   })
 
+  describe('Recover password flow', () => {
+
+    describe('given form', () => {
+  
+      it('when email is empty, then recover password button should be disabled', () => {
+        setEmail('');
+    
+        expect(recoverPasswordButton().disabled).toBeTruthy();
+      })
+    
+      it('when email is invalid, then recover password button should be disabled', () => {
+        setEmail('invalidEmail');
+    
+        expect(recoverPasswordButton().disabled).toBeTruthy();
+      })
+    
+      it('when email is valid, then recover password button should be enabled', () => {
+        setEmail('valid@email.com');
+    
+        expect(recoverPasswordButton().disabled).toBeFalsy();
+      })
+  
+    })
+
+    describe('given user clicks on recover password button', () => {
+
+      beforeEach(() => {
+        setEmail('valid@email.com');
+        recoverPasswordButton().click();
+        fixture.detectChanges();
+      })
+
+      it('then show recover password loader', () => {
+        expect(recoverPasswordLoader()).not.toBeNull();
+      })
+
+      it('then hide recover password button', () => {
+        expect(recoverPasswordButton()).toBeNull();
+      })
+
+      describe('when recover password success', () => {
+
+        beforeEach(() => {
+          authenticationService._recoverPasswordResponse.next({});
+          fixture.detectChanges();
+        })
+
+        it('then hide recover password loader', () => {
+          expect(recoverPasswordLoader()).toBeNull();
+        })
+  
+        it('then show recover password button', () => {
+          expect(recoverPasswordButton()).not.toBeNull();
+        })
+
+        it('then show success message', () => {
+          expect(snackBar._isOpened).toBeTruthy();
+        })
+
+      })
+
+      describe('when recover password fails', () => {
+
+        beforeEach(() => {
+          authenticationService._recoverPasswordResponse.error({message: "any message"});
+          fixture.detectChanges();
+        })
+
+        it('then hide recover password loader', () => {
+          expect(recoverPasswordLoader()).toBeNull();
+        })
+  
+        it('then show recover password button', () => {
+          expect(recoverPasswordButton()).not.toBeNull();
+        })
+
+        it('then show error message', () => {
+          expect(snackBar._isOpened).toBeTruthy();
+        })
+
+      })
+
+    })
+
+  })
+
   function setEmail(value: string) {
     component.form.get('email')?.setValue(value);
     fixture.detectChanges();
@@ -181,10 +245,18 @@ describe('SigninComponent', () => {
     return page.querySelector('[test-id="login-loader"]');
   }
 
+  function recoverPasswordLoader() {
+    return page.querySelector('[test-id="recover-password-loader"]');
+  }
+
 });
 
 class AuthenticationServiceMock {
+  _recoverPasswordResponse = new Subject();
   _signInResponse = new Subject();
+  recoverPassword() {
+    return this._recoverPasswordResponse.asObservable();
+  }
   signIn() {
     return this._signInResponse.asObservable();
   }

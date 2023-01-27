@@ -13,6 +13,7 @@ export class SigninComponent implements OnInit {
 
   form!: FormGroup;
   isLoggingIn = false;
+  isRecoveringPassword = false;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -42,6 +43,24 @@ export class SigninComponent implements OnInit {
         duration: 5000
       })
     });
+  }
+
+  recoverPassword() {
+    this.isRecoveringPassword = true;
+
+    this.authenticationService.recoverPassword(
+      this.form.value.email
+    ).subscribe(() => {
+      this.isRecoveringPassword = false;
+      this.snackBar.open("You can recover your password in your email account.", "OK", {
+        duration: 5000
+      })
+    }, (error: any) => {
+      this.isRecoveringPassword = false;
+      this.snackBar.open(error.message, "OK", {
+        duration: 5000
+      });
+    })
   }
 
 }
