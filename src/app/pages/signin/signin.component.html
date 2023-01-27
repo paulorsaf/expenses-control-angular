@@ -24,9 +24,13 @@
                 Recover password
             </button>
         </div>
-        <button mat-raised-button color="primary" [disabled]="!form.valid"
-            test-id="login-button">
+        <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="login()"
+            *ngIf="!isLoggingIn" test-id="login-button">
             LOGIN
+        </button>
+        <button mat-raised-button color="primary" class="button-loader" *ngIf="isLoggingIn"
+            test-id="login-loader">
+            <mat-spinner color="accent" diameter="20"></mat-spinner>
         </button>
         <button mat-stroked-button color="primary">REGISTER</button>
     </form>
