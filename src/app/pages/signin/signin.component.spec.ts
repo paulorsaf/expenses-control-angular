@@ -62,37 +62,41 @@ describe('SigninComponent', () => {
       expect(recoverPasswordButton().disabled).toBeFalsy();
     })
 
-    it('when email is empty, then login button should be disabled', () => {
-      setEmail('');
-      setPassword('anyPassword');
-  
-      expect(loginButton().disabled).toBeTruthy();
-    })
-
-    it('when email is invalid, then login button should be disabled', () => {
-      setEmail('invalidEmail');
-      setPassword('anyPassword');
-  
-      expect(loginButton().disabled).toBeTruthy();
-    })
-
-    it('when password is empty, then login button should be disabled', () => {
-      setEmail('valid@email.com');
-      setPassword('');
-  
-      expect(loginButton().disabled).toBeTruthy();
-    })
-
-    it('when password is not empty, then login button should be enabled', () => {
-      setEmail('valid@email.com');
-      setPassword('anyPassword');
-  
-      expect(loginButton().disabled).toBeFalsy();
-    })
-
   })
 
   describe('Login flow', () => {
+
+    describe('given form', () => {
+
+      it('when email is empty, then login button should be disabled', () => {
+        setEmail('');
+        setPassword('anyPassword');
+    
+        expect(loginButton().disabled).toBeTruthy();
+      })
+  
+      it('when email is invalid, then login button should be disabled', () => {
+        setEmail('invalidEmail');
+        setPassword('anyPassword');
+    
+        expect(loginButton().disabled).toBeTruthy();
+      })
+
+      it('when password is empty, then login button should be disabled', () => {
+        setEmail('valid@email.com');
+        setPassword('');
+    
+        expect(loginButton().disabled).toBeTruthy();
+      })
+  
+      it('when form is valid, then login button should be enabled', () => {
+        setEmail('valid@email.com');
+        setPassword('anyPassword');
+    
+        expect(loginButton().disabled).toBeFalsy();
+      })
+
+    })
 
     describe('given user clicks on login button', () => {
 
