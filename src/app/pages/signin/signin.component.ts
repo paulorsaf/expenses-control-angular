@@ -35,13 +35,14 @@ export class SigninComponent implements OnInit {
     this.authenticationService.signIn({
       email: this.form.value.email,
       password: this.form.value.password
-    }).subscribe(() => {
-      this.router.navigate(['home']);
-    }, (error: any) => {
-      this.isLoggingIn = false;
-      this.snackBar.open(error.message, "OK", {
-        duration: 5000
-      })
+    }).subscribe({
+      next: () => this.router.navigate(['home']),
+      error: error => {
+        this.isLoggingIn = false;
+        this.snackBar.open(error.message, "OK", {
+          duration: 5000
+        })
+      }
     });
   }
 
@@ -50,16 +51,19 @@ export class SigninComponent implements OnInit {
 
     this.authenticationService.recoverPassword(
       this.form.value.email
-    ).subscribe(() => {
-      this.isRecoveringPassword = false;
-      this.snackBar.open("You can recover your password in your email account.", "OK", {
-        duration: 5000
-      })
-    }, (error: any) => {
-      this.isRecoveringPassword = false;
-      this.snackBar.open(error.message, "OK", {
-        duration: 5000
-      });
+    ).subscribe({
+      next: () => {
+        this.isRecoveringPassword = false;
+        this.snackBar.open("You can recover your password in your email account.", "OK", {
+          duration: 5000
+        });
+      },
+      error: error => {
+        this.isRecoveringPassword = false;
+        this.snackBar.open(error.message, "OK", {
+          duration: 5000
+        });
+      }
     })
   }
 
